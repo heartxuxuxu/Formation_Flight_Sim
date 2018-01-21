@@ -1,18 +1,3 @@
-
-% -------------------------------------------------------------------------
-%
-% File : DynamicWindowApproachSample.m
-%
-% Discription : Mobile Robot Motion Planning with Dynamic Window Approach
-%
-% Environment : Matlab
-%
-% Author : Atsushi Sakai
-%
-% Copyright (c): 2014 Atsushi Sakai
-%
-% License : Modified BSD Software License Agreement
-% -------------------------------------------------------------------------
 % DWAÎ±´úÂë
 % BEGIN DWA(robotPose,robotGoal,robotModel)  
 %    laserscan = readScanner()  
