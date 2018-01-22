@@ -122,13 +122,13 @@ for i=1:5000
             plot(traj4(ind,:),traj4(ind+1,:),'-g');hold on;
         end
     end
-%     DrawQuadrotor(x(1,1),x(2,1));
+    DrawQuadrotor(x(1,1),x(2,1));
     quiver(x(1,1),x(2,1),ArrowLength*cos(x(3,1)),ArrowLength*sin(x(3,1)),'ok');hold on;
-%     DrawQuadrotor(x(1,2),x(2,2));
+    DrawQuadrotor(x(1,2),x(2,2));
     quiver(x(1,2),x(2,2),ArrowLength*cos(x(3,2)),ArrowLength*sin(x(3,2)),'ok');hold on;
-%     DrawQuadrotor(x(1,3),x(2,3));
+    DrawQuadrotor(x(1,3),x(2,3));
     quiver(x(1,3),x(2,3),ArrowLength*cos(x(3,3)),ArrowLength*sin(x(3,3)),'ok');hold on;
-%     DrawQuadrotor(x(1,4),x(2,4));
+    DrawQuadrotor(x(1,4),x(2,4));
     quiver(x(1,4),x(2,4),ArrowLength*cos(x(3,4)),ArrowLength*sin(x(3,4)),'ok');hold on;    
     axis(area);
     grid on;
