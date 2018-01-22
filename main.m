@@ -14,13 +14,13 @@ goal=[3 3;
       8 8];% 目标点位置 [x(m),y(m)]
 temp_goal=goal;
 goal_series=[1;2;3;4];
-obstacleR=0.3;% 冲突判定用的障碍物半径
+obstacleR=0.5;% 冲突判定用的障碍物半径
 global dt; dt=0.1;% 时间[s]
 
 % 机器人运动学模型
 % 最高速度m/s],最高旋转速度[rad/s],加速度[m/ss],旋转加速度[rad/ss],
 % 速度分辨率[m/s],转速分辨率[rad/s]]
-Kinematic=[1.0,toRadian(20.0),0.2,toRadian(50.0),0.01,toRadian(1)];
+Kinematic=[2.0,toRadian(30.0),0.2,toRadian(50.0),0.01,toRadian(1)];
 % 评价函数参数 [heading,dist,velocity,predictDT]
 evalParam=[0.1,0.3,0.1,3.0 ];
 area=[-1 12 -1 12];% 模拟区域范围 [xmin xmax ymin ymax]
@@ -32,8 +32,8 @@ result.quad3=[];
 result.quad4=[];
 tic;
 % Main loop
-writerObj=VideoWriter('formation.avi');  % 定义一个视频文件用来存动画  
-open(writerObj);                    % 打开该视频文件  
+% writerObj=VideoWriter('formation.avi');  % 定义一个视频文件用来存动画  
+% open(writerObj);                    % 打开该视频文件  
 %Target Allocation
 [goal]=Target_Allocation(goal,quad_init_x,quad_init_y,num,target_num,goal_series,temp_goal,mirror_dis);
 x=[quad_init_x(1,1) quad_init_y(1,1) atan2((goal(1,2)-quad_init_y(1,1)),(goal(1,1)-quad_init_x(1,1))) 0 0;
@@ -114,16 +114,20 @@ for i=1:5000
             plot(traj4(ind,:),traj4(ind+1,:),'-g');hold on;
         end
     end
+    DrawQuadrotor(x(1,1),x(2,1));
     quiver(x(1,1),x(2,1),ArrowLength*cos(x(3,1)),ArrowLength*sin(x(3,1)),'ok');hold on;
+    DrawQuadrotor(x(1,2),x(2,2));
     quiver(x(1,2),x(2,2),ArrowLength*cos(x(3,2)),ArrowLength*sin(x(3,2)),'ok');hold on;
+    DrawQuadrotor(x(1,3),x(2,3));
     quiver(x(1,3),x(2,3),ArrowLength*cos(x(3,3)),ArrowLength*sin(x(3,3)),'ok');hold on;
+    DrawQuadrotor(x(1,4),x(2,4));
     quiver(x(1,4),x(2,4),ArrowLength*cos(x(3,4)),ArrowLength*sin(x(3,4)),'ok');hold on;    
     axis(area);
     grid on;
     drawnow;
-    frame = getframe;            %// 把图像存入视频文件中  
-    writeVideo(writerObj,frame); %// 将帧写入视频  
+%     frame = getframe;            %// 把图像存入视频文件中  
+%     writeVideo(writerObj,frame); %// 将帧写入视频  
 end
 toc
-close(writerObj); %// 关闭视频文件句柄  
+% close(writerObj); %// 关闭视频文件句柄  
 close all;
