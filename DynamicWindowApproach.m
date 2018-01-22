@@ -7,7 +7,7 @@ Vr=CalcDynamicWindow(x,model);
 [evalDB,trajDB]=Evaluation(x,Vr,goal,ob,R,model,evalParam);
 
 if isempty(evalDB)
-    disp('no path to goal!!');
+    disp('Initial Error!!');
     u=[0;0];return;
 end
 
