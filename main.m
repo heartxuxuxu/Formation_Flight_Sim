@@ -22,7 +22,7 @@ global dt; dt=0.1;% 时间[s]
 % 速度分辨率[m/s],转速分辨率[rad/s]]
 Kinematic=[1.0,toRadian(20.0),0.2,toRadian(50.0),0.01,toRadian(1)];
 % 评价函数参数 [heading,dist,velocity,predictDT]
-evalParam=[0.1,0.2,0.1,3.0 ];
+evalParam=[0.1,0.3,0.1,3.0 ];
 area=[-1 12 -1 12];% 模拟区域范围 [xmin xmax ymin ymax]
 mirror_dis=zeros(4,4);
 % 模拟实验的结果
