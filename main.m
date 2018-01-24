@@ -8,6 +8,10 @@ num=4;%参与编队的无人机初始数量
 target_num=4;
 quad_init_x=12*rand(num,1);%初始位置生成
 quad_init_y=12*rand(num,1);
+%%%%%%%%%%%%%%%%%%%%%%%%quad_init_for_test%%%%%%%%%%%%%%%%%%%%%%%%%
+% quad_init_x=[8.241305200383780;2.202133868847237;4.421815157884038;7.507422728756284];
+% quad_init_y=[9.362729221816522;0.973509226389423;11.152631651624759;9.308552143300828];
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 goal=[3 3;
       3 8;
       8 3;
@@ -20,7 +24,7 @@ global dt; dt=0.1;% 时间[s]
 % 机器人运动学模型
 % 最高速度m/s],最高旋转速度[rad/s],加速度[m/ss],旋转加速度[rad/ss],
 % 速度分辨率[m/s],转速分辨率[rad/s]]
-Kinematic=[1.0,toRadian(25.0),0.2,toRadian(50.0),0.01,toRadian(1)];
+Kinematic=[1.0,toRadian(90.0),0.3,toRadian(50.0),0.01,toRadian(1)];
 % 评价函数参数 [heading,dist,velocity,predictDT]
 evalParam=[0.1,0.3,0.1,3.0 ];
 area=[-1 12 -1 12];% 模拟区域范围 [xmin xmax ymin ymax]
@@ -36,8 +40,8 @@ traj3=[];
 traj4=[];
 tic;
 % Main loop
-writerObj=VideoWriter('formation.avi');  % 定义一个视频文件用来存动画  
-open(writerObj);                    % 打开该视频文件  
+% writerObj=VideoWriter('formation.avi');  % 定义一个视频文件用来存动画  
+% open(writerObj);                    % 打开该视频文件  
 %Target Allocation
 [goal]=Target_Allocation(goal,quad_init_x,quad_init_y,num,target_num,goal_series,temp_goal,mirror_dis);
 x=[quad_init_x(1,1) quad_init_y(1,1) atan2((goal(1,2)-quad_init_y(1,1)),(goal(1,1)-quad_init_x(1,1))) 0 0;
@@ -55,6 +59,7 @@ for i=1:5000
     obstacle2=[x(1,1) x(2,1);x(1,3) x(2,3);x(1,4) x(2,4)];
     obstacle3=[x(1,1) x(2,1);x(1,2) x(2,2);x(1,4) x(2,4)];
     obstacle4=[x(1,1) x(2,1);x(1,2) x(2,2);x(1,3) x(2,3)];
+%     obstacle4=[8 8;x(1,2) x(2,2);x(1,3) x(2,3)];
     if norm(x(1:2,1)-goal(1,:)')>0.1
         [x(:,1),traj1]=distributed_planning(x(:,1),Kinematic,goal(1,:),evalParam,obstacle1,obstacleR);
     end
@@ -133,9 +138,9 @@ for i=1:5000
     axis(area);
     grid on;
     drawnow;
-    frame = getframe;            %// 把图像存入视频文件中  
-    writeVideo(writerObj,frame); %// 将帧写入视频  
+%     frame = getframe;            %// 把图像存入视频文件中  
+%     writeVideo(writerObj,frame); %// 将帧写入视频  
 end
 toc
-close(writerObj); %// 关闭视频文件句柄  
+% close(writerObj); %// 关闭视频文件句柄  
 close all;
