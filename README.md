@@ -5,4 +5,10 @@ The simulation of formation control for quadrotor, including target allocation, 
 
 2017.1.22 Experimental Result for Formation Generating.
 
+![image](https://github.com/heartxuxuxu/Formation_Flight_Sim/blob/master/2018.2.2.16.20formation.gif)
+
+![image](https://github.com/heartxuxuxu/Formation_Flight_Sim/blob/master/2018.2.2.16.26formation.gif)
+
+2018.2.2 Introduce the relative motion model for quadrotors to the local planning algorithm.
+
 Continuous update...
