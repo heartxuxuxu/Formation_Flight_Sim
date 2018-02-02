@@ -4,7 +4,7 @@ row=0;
 line=0;
 temp_sum_dis=0;
 sum_dis=[0;0;0;0];
-limited_init_distance=7;%?????????
+limited_init_distance=0;%?????????
 quad_init=[quad_init_x quad_init_y];
 
 distance=[sqrt((quad_init(1,1)-goal(1,1))^2+(quad_init(1,2)-goal(1,2))^2) sqrt((quad_init(1,1)-goal(2,1))^2+(quad_init(1,2)-goal(2,2))^2) sqrt((quad_init(1,1)-goal(3,1))^2+(quad_init(1,2)-goal(3,2))^2) sqrt((quad_init(1,1)-goal(4,1))^2+(quad_init(1,2)-goal(4,2))^2);

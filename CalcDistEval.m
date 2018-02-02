@@ -3,7 +3,7 @@ function dist=CalcDistEval(x,ob,R)
 
 dist=100;
 for io=1:length(ob(:,1))
-    disttmp=norm(ob(io,:)-x(1:2)')-R;%僷僗偺埵抲偲忈奞暔偲偺僲儖儉岆嵎傪寁嶼
+    disttmp=norm(ob(io,1:2)-x(1:2)')-R;%僷僗偺埵抲偲?釆Q暔偲偺僲儖儉岆?穫饘v嶼
     if dist>disttmp% 离障碍物最小的距离
         dist=disttmp;
     end
