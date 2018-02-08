@@ -9,8 +9,8 @@ target_num=4;
 % quad_init_x=12*rand(num,1);%初始位置生成
 % quad_init_y=12*rand(num,1);
 %%%%%%%%%%%%%%%%%%%%%%%%quad_init_for_test%%%%%%%%%%%%%%%%%%%%%%%%%
-quad_init_x=[3.542485; 6.383831; 6.091012; 5.989446];%[6.184407; 7.890367; 11.410982; 8.668182];%[10.688254; 5.888052; 9.669882; 3.917267];
-quad_init_y=[10.937970; 8.764121; 10.796546; 9.659098];%[4.800957; 9.982456; 1.612060; 0.725601];%[6.598550; 4.665412; 10.761948; 8.113441];
+quad_init_x=[9.940364; 10.902533; 8.463561; 2.919964];%[8.971954; 7.746414; 1.478634; 6.052774];%[8.971954; 7.746414; 1.478634; 6.052774];%[6.184407; 7.890367; 11.410982; 8.668182];%
+quad_init_y=[7.070779; 11.266800; 10.746024; 7.274714];%[4.167136; 1.105772; 1.774194; 2.378036];%[4.167136; 1.105772; 1.774194; 2.378036];%[4.800957; 9.982456; 1.612060; 0.725601];%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 goal=[3 3;
       3 8;
@@ -24,9 +24,9 @@ global dt; dt=0.1;% 时间[s]
 % 机器人运动学模型
 % 最高速度m/s],最高旋转速度[rad/s],加速度[m/ss],旋转加速度[rad/ss],
 % 速度分辨率[m/s],转速分辨率[rad/s]]
-Kinematic=[1.0,toRadian(90.0),0.4,toRadian(50.0),0.01,toRadian(1)];
+Kinematic=[1.0,toRadian(120.0),0.4,toRadian(60.0),0.01,toRadian(1)];
 % 评价函数参数 [heading,dist,velocity,predictDT]
-evalParam=[0.18,0.2,0.1,3.0 ];
+evalParam=[0.1,0.2,0.2,3.0 ];
 area=[-1 12 -1 12];% 模拟区域范围 [xmin xmax ymin ymax]
 mirror_dis=zeros(4,4);
 % 模拟实验的结果
@@ -60,6 +60,7 @@ for i=1:5000
     obstacle3=[x(1,1) x(2,1) x(3,1) x(4,1);x(1,2) x(2,2) x(3,2) x(4,2);x(1,4) x(2,4) x(3,4) x(4,4)];
     obstacle4=[x(1,1) x(2,1) x(3,1) x(4,1);x(1,2) x(2,2) x(3,2) x(4,2);x(1,3) x(2,3) x(3,3) x(4,3)];
 %     obstacle4=[8 8;x(1,2) x(2,2);x(1,3) x(2,3)];
+% [Pt b]=FindIntersection(x(1,3),x(2,3),goal(3,1),goal(3,2),x(1,4),x(2,4),goal(4,1),goal(4,2));
     if norm(x(1:2,1)-goal(1,:)')>0.1
         [x(:,1),traj1]=distributed_planning(x(:,1),Kinematic,goal(1,:),evalParam,obstacle1,obstacleR);
     end
@@ -89,11 +90,7 @@ for i=1:5000
     %====Animation====
     hold off;
     ArrowLength=0.5;% 
-    % 机器人
-    plot([goal(1,1),x(1,1)],[goal(1,2),x(2,1)],'y');hold on;
-    plot([goal(2,1),x(1,2)],[goal(2,2),x(2,2)],'y');hold on;
-    plot([goal(3,1),x(1,3)],[goal(3,2),x(2,3)],'y');hold on;
-    plot([goal(4,1),x(1,4)],[goal(4,2),x(2,4)],'y');hold on;    
+    % 机器人 
     plot(result.quad1(:,1),result.quad1(:,2),'-b');hold on;
     plot(result.quad2(:,1),result.quad2(:,2),'-m');hold on;
     plot(result.quad3(:,1),result.quad3(:,2),'-r');hold on;
@@ -103,8 +100,8 @@ for i=1:5000
     plot(goal(3,1),goal(3,2),'*r');hold on;
     plot(goal(4,1),goal(4,2),'*c');hold on;
     
-%     [Pt b]=FindIntersection(x(1,1),x(2,1),goal(1,1),goal(1,2),x(1,3),x(2,3),goal(3,1),goal(3,2))
-%     [Pt b]=FindIntersection(x(1,1),x(2,1),goal(1,1),goal(1,2),x(1,4),x(2,4),goal(4,1),goal(4,2))
+% [Pt b]=FindIntersection(x(1,1),x(2,1),goal(1,1),goal(1,2),x(1,3),x(2,3),goal(3,1),goal(3,2))
+
 % str=['***1 ' num2str(toDegree(x(3,1)))];
 % disp(str);
 % str=['***3 ' num2str(toDegree(x(3,3)))];

@@ -10,6 +10,6 @@ for io=1:length(ob(:,1))
 end
 
 % 障碍物距离评价限定一个最大值，如果不设定，一旦一条轨迹没有障碍物，将太占比重
-if dist>=2*R
-    dist=2*R;
+if dist>=3*R
+    dist=3*R;
 end

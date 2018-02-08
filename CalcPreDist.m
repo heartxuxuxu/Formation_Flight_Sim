@@ -21,11 +21,14 @@ for io=1:length(ob(:,1))
     if Predist>Predisttmp% 离障碍物最小的距离
         Predist=Predisttmp;
     end
+    if pre_ob(io,4)<0.2
+        Predist=3*R;
+    end
 end
 
 % 障碍物距离评价限定一个最大值，如果不设定，一旦一条轨迹没有障碍物，将太占比重
-if Predist>=2*R
-    Predist=2*R;
+if Predist>=3*R
+    Predist=3*R;
 end
 
 end

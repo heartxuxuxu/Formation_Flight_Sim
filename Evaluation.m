@@ -9,10 +9,12 @@ for vt=Vr(1):model(5):Vr(2)
         % 各评价函数的计算
         dist=CalcDistEval(xt,ob,R);
         Predist=CalcPreDist(xt,ob,R);
-        dist=dist+1.2*Predist;
+        dist=dist+Predist;
         heading=CalcHeadingEval(xt,goal);
         vel=abs(vt);
         % 制动距离的计算
+%         str=['dist ' num2str(dist) 'head ' num2str(heading) 'vel ' num2str(vel)];
+%         disp(str);
         stopDist=CalcBreakingDist(vel,model);
         if dist>stopDist % 
             evalDB=[evalDB;[vt ot heading dist vel]];
