@@ -6,11 +6,11 @@ disp('Formation program start!!')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%init%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 num=4;%参与编队的无人机初始数量
 target_num=4;
-% quad_init_x=12*rand(num,1);%初始位置生成
-% quad_init_y=12*rand(num,1);
+quad_init_x=12*rand(num,1);%初始位置生成
+quad_init_y=12*rand(num,1);
 %%%%%%%%%%%%%%%%%%%%%%%%quad_init_for_test%%%%%%%%%%%%%%%%%%%%%%%%%
-quad_init_x=[9.940364; 10.902533; 8.463561; 2.919964];%[8.971954; 7.746414; 1.478634; 6.052774];%[8.971954; 7.746414; 1.478634; 6.052774];%[6.184407; 7.890367; 11.410982; 8.668182];%
-quad_init_y=[7.070779; 11.266800; 10.746024; 7.274714];%[4.167136; 1.105772; 1.774194; 2.378036];%[4.167136; 1.105772; 1.774194; 2.378036];%[4.800957; 9.982456; 1.612060; 0.725601];%
+% quad_init_x=[9.940364; 10.902533; 8.463561; 2.919964];%[8.971954; 7.746414; 1.478634; 6.052774];%[8.971954; 7.746414; 1.478634; 6.052774];%[6.184407; 7.890367; 11.410982; 8.668182];%
+% quad_init_y=[7.070779; 11.266800; 10.746024; 7.274714];%[4.167136; 1.105772; 1.774194; 2.378036];%[4.167136; 1.105772; 1.774194; 2.378036];%[4.800957; 9.982456; 1.612060; 0.725601];%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 goal=[3 3;
       3 8;
@@ -22,9 +22,8 @@ obstacleR=0.5;% 冲突判定用的障碍物半径
 global dt; dt=0.1;% 时间[s]
 
 % 机器人运动学模型
-% 最高速度m/s],最高旋转速度[rad/s],加速度[m/ss],旋转加速度[rad/ss],
-% 速度分辨率[m/s],转速分辨率[rad/s]]
-Kinematic=[1.0,toRadian(120.0),0.4,toRadian(60.0),0.01,toRadian(1)];
+% 最高速度m/s],加速度[m/ss],速度分辨率[m/s]
+Kinematic=[-1.0,1.0,0.4,0.02];
 % 评价函数参数 [heading,dist,velocity,predictDT]
 evalParam=[0.1,0.2,0.2,3.0 ];
 area=[-1 12 -1 12];% 模拟区域范围 [xmin xmax ymin ymax]
@@ -44,22 +43,17 @@ tic;
 % open(writerObj);                    % 打开该视频文件  
 %Target Allocation
 [goal]=Target_Allocation(goal,quad_init_x,quad_init_y,num,target_num,goal_series,temp_goal,mirror_dis);
-x=[quad_init_x(1,1) quad_init_y(1,1) atan2((goal(1,2)-quad_init_y(1,1)),(goal(1,1)-quad_init_x(1,1))) 0 0;
-   quad_init_x(2,1) quad_init_y(2,1) atan2((goal(2,2)-quad_init_y(2,1)),(goal(2,1)-quad_init_x(2,1))) 0 0;
-   quad_init_x(3,1) quad_init_y(3,1) atan2((goal(3,2)-quad_init_y(3,1)),(goal(3,1)-quad_init_x(3,1))) 0 0;
-   quad_init_x(4,1) quad_init_y(4,1) atan2((goal(4,2)-quad_init_y(4,1)),(goal(4,1)-quad_init_x(4,1))) 0 0]';% 机器人的初期状态[x(m),y(m),yaw(Rad),v(m/s),w(rad/s)]
-% x=[quad_init_x(1,1) quad_init_y(1,1) pi/2 0 0;
-%    quad_init_x(2,1) quad_init_y(2,1) pi/2 0 0;
-%    quad_init_x(3,1) quad_init_y(3,1) pi/2 0 0;
-%    quad_init_x(4,1) quad_init_y(4,1) pi/2 0 0]';% 机器人的初期状态[x(m),y(m),yaw(Rad),v(m/s),w(rad/s)]
+x=[quad_init_x(1,1) quad_init_y(1,1) 0 0 atan2((goal(1,2)-quad_init_y(1,1)),(goal(1,1)-quad_init_x(1,1)));
+   quad_init_x(2,1) quad_init_y(2,1) 0 0 atan2((goal(2,2)-quad_init_y(2,1)),(goal(2,1)-quad_init_x(2,1)));
+   quad_init_x(3,1) quad_init_y(3,1) 0 0 atan2((goal(3,2)-quad_init_y(3,1)),(goal(3,1)-quad_init_x(3,1)));
+   quad_init_x(4,1) quad_init_y(4,1) 0 0 atan2((goal(4,2)-quad_init_y(4,1)),(goal(4,1)-quad_init_x(4,1)))]';
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 for i=1:5000
     % DWA参数输入
-    obstacle1=[x(1,2) x(2,2) x(3,2) x(4,2);x(1,3) x(2,3) x(3,3) x(4,3);x(1,4) x(2,4) x(3,4) x(4,4)];
-    obstacle2=[x(1,1) x(2,1) x(3,1) x(4,1);x(1,3) x(2,3) x(3,3) x(4,3);x(1,4) x(2,4) x(3,4) x(4,4)];
-    obstacle3=[x(1,1) x(2,1) x(3,1) x(4,1);x(1,2) x(2,2) x(3,2) x(4,2);x(1,4) x(2,4) x(3,4) x(4,4)];
-    obstacle4=[x(1,1) x(2,1) x(3,1) x(4,1);x(1,2) x(2,2) x(3,2) x(4,2);x(1,3) x(2,3) x(3,3) x(4,3)];
-%     obstacle4=[8 8;x(1,2) x(2,2);x(1,3) x(2,3)];
+    obstacle1=[x(1,2) x(2,2) x(3,2) x(4,2) x(5,2);x(1,3) x(2,3) x(3,3) x(4,3) x(5,3);x(1,4) x(2,4) x(3,4) x(4,4) x(5,4)];
+    obstacle2=[x(1,1) x(2,1) x(3,1) x(4,1) x(5,1);x(1,3) x(2,3) x(3,3) x(4,3) x(5,3);x(1,4) x(2,4) x(3,4) x(4,4) x(5,4)];
+    obstacle3=[x(1,1) x(2,1) x(3,1) x(4,1) x(5,1);x(1,2) x(2,2) x(3,2) x(4,2) x(5,2);x(1,4) x(2,4) x(3,4) x(4,4) x(5,4)];
+    obstacle4=[x(1,1) x(2,1) x(3,1) x(4,1) x(5,1);x(1,2) x(2,2) x(3,2) x(4,2) x(5,2);x(1,3) x(2,3) x(3,3) x(4,3) x(5,3)];
 % [Pt b]=FindIntersection(x(1,3),x(2,3),goal(3,1),goal(3,2),x(1,4),x(2,4),goal(4,1),goal(4,2));
     if norm(x(1:2,1)-goal(1,:)')>0.1
         [x(:,1),traj1]=distributed_planning(x(:,1),Kinematic,goal(1,:),evalParam,obstacle1,obstacleR);
@@ -135,16 +129,18 @@ for i=1:5000
         end
     end
 %     DrawQuadrotor(x(1,1),x(2,1));
-    quiver(x(1,1),x(2,1),ArrowLength*cos(x(3,1)),ArrowLength*sin(x(3,1)),'ok');hold on;
+    quiver(x(1,1),x(2,1),ArrowLength*cos(x(5,1)),ArrowLength*sin(x(5,1)),'ok');hold on;
 %     DrawQuadrotor(x(1,2),x(2,2));
-    quiver(x(1,2),x(2,2),ArrowLength*cos(x(3,2)),ArrowLength*sin(x(3,2)),'ok');hold on;
+    quiver(x(1,2),x(2,2),ArrowLength*cos(x(5,2)),ArrowLength*sin(x(5,2)),'ok');hold on;
 %     DrawQuadrotor(x(1,3),x(2,3));
-    quiver(x(1,3),x(2,3),ArrowLength*cos(x(3,3)),ArrowLength*sin(x(3,3)),'ok');hold on;
+    quiver(x(1,3),x(2,3),ArrowLength*cos(x(5,3)),ArrowLength*sin(x(5,3)),'ok');hold on;
 %     DrawQuadrotor(x(1,4),x(2,4));
-    quiver(x(1,4),x(2,4),ArrowLength*cos(x(3,4)),ArrowLength*sin(x(3,4)),'ok');hold on;    
+    quiver(x(1,4),x(2,4),ArrowLength*cos(x(5,4)),ArrowLength*sin(x(5,4)),'ok');hold on;   
     axis(area);
     grid on;
     drawnow;
+    
+    a=1;
 %     frame = getframe;            %// 把图像存入视频文件中  
 %     writeVideo(writerObj,frame); %// 将帧写入视频  
 end

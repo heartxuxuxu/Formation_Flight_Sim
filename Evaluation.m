@@ -2,22 +2,20 @@ function [evalDB,trajDB]=Evaluation(x,Vr,goal,ob,R,model,evalParam)% ÆÀ¼Ûº¯ÊýµÄ¼
 % 
 evalDB=[];
 trajDB=[];
-for vt=Vr(1):model(5):Vr(2)
-    for ot=Vr(3):model(6):Vr(4)%¶ÔÓÚËùÓÐ¿ÉÄÜµÄËÙ¶ÈºÍ½ÇËÙ¶È
+for vxt=Vr(1):model(4):Vr(2)
+    for vyt=Vr(3):model(4):Vr(4)%¶ÔÓÚËùÓÐ¿ÉÄÜµÄËÙ¶ÈºÍ½ÇËÙ¶È
         % ¹ì¼£ÍÆ²â; µÃµ½ xt: »úÆ÷ÈËÏòÇ°ÔË¶¯ºóµÄÔ¤²âÎ»×Ë; traj: µ±Ç°Ê±¿Ì µ½ Ô¤²âÊ±¿ÌÖ®¼äµÄ¹ì¼£
-        [xt,traj]=GenerateTrajectory(x,vt,ot,evalParam(4),model);  %evalParam(4),Ç°ÏòÄ£ÄâÊ±¼ä;
+        [xt,traj]=GenerateTrajectory(x,vxt,vyt,evalParam(4));  %evalParam(4),Ç°ÏòÄ£ÄâÊ±¼ä;
         % ¸÷ÆÀ¼Ûº¯ÊýµÄ¼ÆËã
         dist=CalcDistEval(xt,ob,R);
         Predist=CalcPreDist(xt,ob,R);
         dist=dist+Predist;
         heading=CalcHeadingEval(xt,goal);
-        vel=abs(vt);
+        vel=sqrt(vxt*vxt+vyt*vyt);
         % ÖÆ¶¯¾àÀëµÄ¼ÆËã
-%         str=['dist ' num2str(dist) 'head ' num2str(heading) 'vel ' num2str(vel)];
-%         disp(str);
         stopDist=CalcBreakingDist(vel,model);
         if dist>stopDist % 
-            evalDB=[evalDB;[vt ot heading dist vel]];
+            evalDB=[evalDB;[vxt vyt heading dist vel]];
             trajDB=[trajDB;traj];
         end
     end
