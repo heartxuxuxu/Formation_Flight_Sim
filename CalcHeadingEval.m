@@ -1,6 +1,6 @@
 function heading=CalcHeadingEval(x,goal)
 % heading的评价函数计算
-theta=toDegree(x(5));% 机器人朝向
+theta=toDegree(x(3));% 机器人朝向
 while theta>180
     theta=theta-360;
 end
@@ -21,5 +21,7 @@ if goalTheta>theta
 else
     targetTheta=theta-goalTheta;% [deg]
 end
+
+
 
 heading=abs(180-targetTheta);
