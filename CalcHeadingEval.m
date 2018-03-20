@@ -3,7 +3,7 @@ function heading=CalcHeadingEval(x,goal)
 theta=toDegree(x(3));% »úÆ÷ÈË³¯Ïò
 while theta>180
     theta=theta-360;
-end
+end   
 while theta<-180
     theta=theta+360;
 end
